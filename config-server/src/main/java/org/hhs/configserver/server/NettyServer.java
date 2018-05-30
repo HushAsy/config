@@ -36,7 +36,6 @@ public class NettyServer {
                         ch.pipeline().addLast(new ConnectHandler());
                      }
                  });
-        System.out.println(NetUtils.getNetWorkAddress().get(0));
         ChannelFuture channelFuture = bootstrap.bind(NetUtils.getNetWorkAddress().get(0), 8000).sync();
     }
 }
