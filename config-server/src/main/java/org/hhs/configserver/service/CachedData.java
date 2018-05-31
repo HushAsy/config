@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Service
+@Service("cachedData")
 public class CachedData {
 
     @Autowired

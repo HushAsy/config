@@ -6,7 +6,6 @@
       <module fileurl="file://$PROJECT_DIR$/config-client/config-client.iml" filepath="$PROJECT_DIR$/config-client/config-client.iml" />
       <module fileurl="file://$PROJECT_DIR$/config-common/config-common.iml" filepath="$PROJECT_DIR$/config-common/config-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/config-server/config-server.iml" filepath="$PROJECT_DIR$/config-server/config-server.iml" />
-      <module fileurl="file://$PROJECT_DIR$/config-server/config-server.iml" filepath="$PROJECT_DIR$/config-server/config-server.iml" />
     </modules>
   </component>
 </project>

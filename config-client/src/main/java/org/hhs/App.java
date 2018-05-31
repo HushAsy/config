@@ -12,12 +12,14 @@ import java.io.IOException;
 public class App {
     public static void main( String[] args ) throws InterruptedException, IOException {
 
-        ConfigService.addListener("hello", "test", new ConfigChangeListener() {
-            @Override
-            public void receiveConfigInfo(String content) {
-                System.out.println(content);
-            }
-        });
-        System.in.read();
+//        ConfigService.addListener("hello", "test", new ConfigChangeListener() {
+//            @Override
+//            public void receiveConfigInfo(String content) {
+//                System.out.println(content);
+//            }
+//        });
+        EnviromentInfo info = new EnviromentInfo();
+        System.out.println(info.getIp());
+        System.out.println(info.getPort());
     }
 }

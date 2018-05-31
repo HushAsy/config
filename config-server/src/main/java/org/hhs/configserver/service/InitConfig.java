@@ -27,7 +27,6 @@ public class InitConfig implements InitializingBean {
     public void afterPropertiesSet() throws Exception {
         nettyServer.bind();
         eventSource.registerListener("hello", new EventListener<DataInfo>() {
-
             @Override
             public void eventHandler(DataInfo dataInfo) {
                 Map<String, Channel> channelMap = ChannelHolder.getChannels();
