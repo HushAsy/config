@@ -1,5 +1,7 @@
 package org.hhs.model;
 
+import sun.misc.BASE64Encoder;
+
 import java.io.Serializable;
 
 //配置推送的信息:dataId+group确定一条记录
@@ -39,6 +41,10 @@ public class DataInfo implements Serializable{
 
     public void setGroup(String group) {
         this.group = group;
+    }
+
+    public String getSerialDataInfoId(){
+        return this.getDataId()+this.group;
     }
 
     @Override

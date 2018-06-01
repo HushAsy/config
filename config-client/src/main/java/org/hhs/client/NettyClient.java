@@ -8,17 +8,36 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.serialization.ClassResolver;
 import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
+import org.hhs.ConfigService;
+import org.hhs.EnviromentInfo;
 import org.hhs.client.handler.DataReceiveHandler;
 
-public class NettyClient {
-    EventLoopGroup group = new NioEventLoopGroup();
-    private ChannelFuture channelFuture;
+import java.util.concurrent.CountDownLatch;
 
-    public void connect(String host, int port) throws InterruptedException {
+public class NettyClient {
+    private static NettyClient nettyClient = null;
+
+    public static NettyClient getNettyClient(){
+        if (nettyClient == null){
+            synchronized (ConfigService.class){
+                if (nettyClient == null){
+                    nettyClient = new NettyClient();
+                    return nettyClient;
+                }
+            }
+        }
+        return nettyClient;
+    }
+
+    private EventLoopGroup group = new NioEventLoopGroup();
+    private static ChannelFuture channelFuture;
+
+
+
+    public void connect() {
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(group)
                  .channel(NioSocketChannel.class)
@@ -31,10 +50,14 @@ public class NettyClient {
                          ch.pipeline().addLast(new DataReceiveHandler());
                      }
                  });
-        channelFuture = bootstrap.connect(host, port).sync();
+        try {
+            channelFuture = bootstrap.connect(EnviromentInfo.getEnviromentInfo().getIp(), Integer.parseInt(EnviromentInfo.getEnviromentInfo().getPort())).sync();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    public ChannelFuture getChannelFuture() {
+    public static ChannelFuture getChannelFuture() {
         return channelFuture;
     }
 

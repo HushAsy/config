@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import io.netty.channel.ChannelFuture;
 import org.hhs.client.NettyClient;
+import org.hhs.listeners.ConfigChangeListener;
 import org.hhs.model.Header;
 import org.hhs.model.MessageType;
 import org.hhs.model.NettyMessage;
@@ -21,14 +22,20 @@ public class AppTest {
      * Rigorous Test :-)
      */
     @Test
-    public void shouldAnswerWithTrue() {
-        assertTrue( true );
+    public void shouldAnswerWithTrue() throws IOException {
+        ConfigService.addListener("hello", "test", new ConfigChangeListener() {
+            @Override
+            public void receiveConfigInfo(String content) {
+                System.out.println(content);
+            }
+        });
+        System.in.read();
     }
 
     @Before
     public void testClient() throws InterruptedException {
         nettyClient = new NettyClient();
-        nettyClient.connect("127.0.0.1", 8000);
+        nettyClient.connect();
     }
 
     @Test

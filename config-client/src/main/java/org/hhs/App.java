@@ -19,5 +19,8 @@ public class App {
             }
         });
         System.in.read();
+//        EnviromentInfo info = new EnviromentInfo();
+//        System.out.println(info.getIp());
+//        System.out.println(info.getPort());
     }
 }

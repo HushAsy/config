@@ -19,7 +19,7 @@ public class CachedData {
     private Map<String, DataInfo> cachedMap = new ConcurrentHashMap();
 
     public void putData(DataInfo dataInfo){
-        cachedMap.put(StringUtils.getStringId(dataInfo.getDataId(),dataInfo.getGroup()), dataInfo);
+        cachedMap.put(dataInfo.getSerialDataInfoId(), dataInfo);
         updateClientData(dataInfo);
     }
 

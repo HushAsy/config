@@ -1,29 +1,35 @@
 package org.hhs.configserver.server.handler;
 
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import org.hhs.StringUtils;
+import org.hhs.configserver.common.ChannelHolder;
+import org.hhs.configserver.common.SpringContextUtils;
+import org.hhs.configserver.service.CachedData;
+import org.hhs.model.DataInfo;
 import org.hhs.model.Header;
 import org.hhs.model.MessageType;
 import org.hhs.model.NettyMessage;
+import org.springframework.context.ApplicationContext;
+
+import javax.xml.crypto.Data;
+import java.util.Map;
 
 public class DataReceiveHandler extends ChannelHandlerAdapter{
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        super.channelRead(ctx, msg);
-        NettyMessage message = (NettyMessage) msg;
-        if (MessageType.DATA_PUSH.getaByte() == message.getHeader().getType()){
-            System.out.println(message.toString());
-        }
-        ctx.channel().writeAndFlush(buildNettyMessage());
-    }
+        DataInfo dataInfoReceived = (DataInfo) msg;
+        CachedData cachedData = (CachedData) SpringContextUtils.getBeanByClass(CachedData.class);
+        Map<String, DataInfo> maps = cachedData.getCachedMap();
+        DataInfo dataInfoSend = maps.get(dataInfoReceived.getSerialDataInfoId());
 
-    public NettyMessage buildNettyMessage(){
-        NettyMessage nettyMessage = new NettyMessage();
-        Header header = new Header.Builder().addType(MessageType.DATA_PULL.getaByte()).addSessionId(StringUtils.getUUID32()).build();
-        nettyMessage.setHeader(header);
-        nettyMessage.setBody("hello");
-        return nettyMessage;
+        Channel channel = ctx.channel();
+        if (null != dataInfoSend) {
+            channel.writeAndFlush(dataInfoSend);
+        }
+        ChannelHolder.putChannel(dataInfoReceived, channel);
+        super.channelRead(ctx, msg);
     }
 }
