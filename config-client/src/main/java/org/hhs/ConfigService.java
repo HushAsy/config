@@ -11,7 +11,9 @@ public class ConfigService {
     static {
         ClientEventSource.initClientEventSource();
         try {
-            nettyClient.connect("127.0.0.1", 8000);
+            String ip = System.getProperty("config.server.ip");
+            int port = System.getProperty("config.server.port") == null?8080:Integer.parseInt(System.getProperty("config.server.port"));
+            nettyClient.connect(ip, 8000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
